@@ -10,9 +10,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.sql.Date
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,27 +24,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        fetchWeatherData()
+        fetchWeatherData(cityName = String())      //point
+
         SearchCity()
     }
+
+//search for a city
     private fun SearchCity(){
         val searchView=binding.searchView
-        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?):Boolean{
-                if (query != null){
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
                     fetchWeatherData(query)
                 }
                 return true
-
             }
 
-            override fun onQueryTextSubmit(query: String?):Boolean{
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Handle text changes as needed
                 return true
-
             }
-
         })
     }
+
+
+
+
+    //fetching data
     private fun fetchWeatherData(cityName:String) {
         val retrofit= Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -88,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     binding.day.text=dayName(System.currentTimeMillis())
                     binding.date.text=date()
                     binding.cityName.text="$cityName"
-                    changeImageAccordingToWeatherCondition()
+                    changeImageAccordingToWeatherCondition(condition)         //point
 
                 }
            }
@@ -134,26 +141,32 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+
+
+    //real time and date
     private fun date(): String{
-        val sdf=SimpleDateFormat("dd MMMM yyyy", Locate.getDefault())
+        val sdf=SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
         return sdf.format((Date()))
     }
 
     private fun time(timestamp: Long):String{
-        val sdf=SimpleDateFormat("HH:mm", Locate.getDefault())
+        val sdf=SimpleDateFormat("HH:mm", Locale.getDefault())
         return sdf.format((Date(timestamp*1000)))
     }
 
 
 
     fun dayName(timestamp: Long):String{
-        val sdf=SimpleDateFormat("EEEE", Locate.getDefault())
+        val sdf=SimpleDateFormat("EEEE", Locale.getDefault())
         return sdf.format((Date()))
     }
 
 
 
 }
+
+
 
 
 
