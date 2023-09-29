@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("https://api.openweathermap.org/data/2.5/")
             .build().create(ApiInterface::class.java)
-        val response=retrofit.getWeatherData("jaipur", "c4ee9e3609ea8674be47579dc97906e5", "matric")
+        val response=retrofit.getWeatherData("${cityName}", "c4ee9e3609ea8674be47579dc97906e5", "matric")
             response.enqueue(object:Callback<WeatherApp>{
 
             override fun onResponse(call: Call<WeatherApp>, response: Response<WeatherApp>) {
@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             "Partly Clouds", "Clouds", "Overcast", "Mist", "Foggy"->{
-                binding.root.setBackgroundResource(R.drawable.cloud_black)
+                binding.root.setBackgroundResource(R.drawable.cloud_background)
                 binding.lottieAnimationView.setAnimation(R.raw.cloud)    //use of lottie
             }
 
